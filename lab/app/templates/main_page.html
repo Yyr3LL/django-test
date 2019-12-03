@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Main page</title>
+</head>
+<body>
+
+    <h1>Main page</h1>
+
+    <header>
+        <h2><a href="/create/bank">Create bank</a></h2>
+        <h2><a href="/create/member">Create member</a></h2>
+        <h2><a href="/create/transaction">Create transacion</a></h2>
+    </header>
+
+    <h1>All the info</h1>
+
+    <ol>
+        {% for bank in banks.all %}
+        <li>
+            <h3><b>Bank:</b> {{bank.name}}<br></h3>
+            Amount of money: {{bank.money_count}}<br>
+            <h4>Members:<br></h4>
+            <ol>
+            {% for member in bank.members.all %}
+                    <li>
+                        Name: <a href="{% url 'member_detail' member.id %}">
+                            {{member.full_name}}
+                        </a><br>
+                        Amount of money: {{member.money_count}}<br>
+                        <b>Transactions:</b><br>
+                        <ol>
+                            {% for tra in member.transactions.all %}
+                            <li>
+                                Value: {{tra.value}}<br>
+                                Date: {{tra.date}}<br>
+                            </li>
+                            {% endfor %}
+                        </ol>
+                        <br>
+                    </li>
+            {% endfor %}
+            </ol>
+        </li>
+        {% endfor %}
+    </ol>
+
+</body>
+</html>

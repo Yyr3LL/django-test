@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Detail page</title>
+</head>
+<body>
+
+<h1>Detail page</h1>
+
+<h3>Member: {{member}}</h3>
+<h3>from bank: {{member.bank}}</h3>
+<h3>List of transactions:</h3>
+
+<ol>
+{% for transaction in member.transactions.all %}
+    <li><ul>
+        <li><b>Value:</b> {{transaction.value}}</li>
+        <li><b>Date:</b> {{transaction.date}}</li>
+    </ul><br></li>
+{% endfor %}
+</ol>
+
+</body>
+</html>
