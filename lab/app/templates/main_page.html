@@ -19,22 +19,30 @@
     <ol>
         {% for bank in banks.all %}
         <li>
-            <h3><b>Bank:</b> {{bank.name}}<br></h3>
-            Amount of money: {{bank.money_count}}<br>
+            <h3><b>Bank:</b> {{bank.name}}</h3>
+            <br>
+            Amount of money: {{bank.money_count}}
+            <br>
+            <a href="{% url 'delete_bank' bank.id %}">Delete this bank</a>
+            <br>
             <h4>Members:<br></h4>
             <ol>
             {% for member in bank.members.all %}
                     <li>
                         Name: <a href="{% url 'member_detail' member.id %}">
                             {{member.full_name}}
-                        </a><br>
+                        </a>
+                        <br>
+                        <a href="{% url 'delete_member' member.id %}">Delete this member</a>
+                        <br>
                         Amount of money: {{member.money_count}}<br>
                         <b>Transactions:</b><br>
                         <ol>
-                            {% for tra in member.transactions.all %}
+                            {% for transaction in member.transactions.all %}
                             <li>
-                                Value: {{tra.value}}<br>
-                                Date: {{tra.date}}<br>
+                                Value: {{transaction.value}}<br>
+                                Date: {{transaction.date}}<br>
+                                <a href="{% url 'delete_transaction' transaction.id %}">Delete this transaction</a>
                             </li>
                             {% endfor %}
                         </ol>

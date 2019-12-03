@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Deleting</title>
+</head>
+<body>
+
+<h3>Delete object?</h3>
+<form method="post">
+    {{ form.as_p }}
+    {% csrf_token %}
+    <button type="submit" href= "{% url 'main_page' %}">Yes, that shalt be better for thee...</button>
+</form>
+
+</body>
+</html>

@@ -1,10 +1,8 @@
 from django.http import HttpResponseRedirect
-from django.views.generic import DetailView, FormView, ListView
+from django.views.generic import DetailView, FormView, ListView, DeleteView
 
 from .forms import *
 
-
-# Main page with all the info
 
 class MainPageView(ListView):
     template_name = "main_page.html"
@@ -12,18 +10,7 @@ class MainPageView(ListView):
     context_object_name = "banks"
 
 
-# Page with info about particular member by member_pk
-
-class MemberDetailView(DetailView):
-    model = Member
-    template_name = 'detail_page.html'
-    context_object_name = 'member'
-    pk_url_kwarg = 'member_pk'
-
-
-# Page where you add banks
-
-class CreateBankView(FormView):
+class BankCreateView(FormView):
     template_name = 'create_bank.html'
     form_class = CreateBankForm
     success_url = '/'
@@ -33,9 +20,7 @@ class CreateBankView(FormView):
         return HttpResponseRedirect('/')
 
 
-# Page where you add members
-
-class CreateMemberView(FormView):
+class MemberCreateView(FormView):
     template_name = 'create_member.html'
     form_class = CreateMemberForm
     success_url = '/'
@@ -45,13 +30,9 @@ class CreateMemberView(FormView):
         return HttpResponseRedirect('/')
 
 
-# Page where you add transactions
-
-class CreateTransactionView(FormView):
+class TransactionCreateView(FormView):
     form_class = CreateTransactionForm
     template_name = 'create_transaction.html'
-
-    # function that django call when form is valid
 
     def form_valid(self, form):
         value = int(form.cleaned_data['value'])
@@ -59,6 +40,9 @@ class CreateTransactionView(FormView):
         form.instance.save()
         self.update_money_count(form.instance.bank, form.instance.member, value)
         return HttpResponseRedirect('/')
+
+    # Validates if any of counts are below zero and then if everything is ok
+    # it updates money count due to transaction form
 
     def update_money_count(self, bank, member, value):
         if value > 0 and bank.money_count < value:
@@ -69,3 +53,34 @@ class CreateTransactionView(FormView):
         bank.save()
         member.money_count += value
         member.save()
+
+
+class MemberDetailView(DetailView):
+    model = Member
+    template_name = 'detail_page.html'
+    context_object_name = 'member'
+    pk_url_kwarg = 'member_pk'
+
+
+class BankDeleteView(DeleteView):
+    model = Bank
+    template_name = 'delete.html'
+    pk_url_kwarg = 'bank_pk'
+    success_url = '/'
+
+
+class MemberDeleteView(DeleteView):
+    model = Member
+    template_name = 'delete.html'
+    pk_url_kwarg = 'member_pk'
+    success_url = '/'
+
+
+class TransactionDeleteView(DeleteView):
+    model = Transaction
+    template_name = 'delete.html'
+    pk_url_kwarg = 'transaction_pk'
+    success_url = '/'
+
+
+

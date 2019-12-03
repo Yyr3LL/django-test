@@ -10,9 +10,13 @@ Activate it
 
     source env/bin/activate 
 
+Install dependencies
+
+    pip install -r requirements.txt
+
 Go to the project dir, make migrations and run the server
 
-    cd lab
+    cd lab/
     py manage.py makemigrations
     py manage.py migrate
     py manage.py runserver
