@@ -1,16 +1,18 @@
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
 from django.views.generic import DetailView, FormView, ListView
 
-from .models import *
 from .forms import *
 
+
+# Main page with all the info
 
 class MainPageView(ListView):
     template_name = "main_page.html"
     queryset = Bank.objects.all().order_by("money_count")
     context_object_name = "banks"
 
+
+# Page with info about particular member by member_pk
 
 class MemberDetailView(DetailView):
     model = Member
@@ -19,31 +21,37 @@ class MemberDetailView(DetailView):
     pk_url_kwarg = 'member_pk'
 
 
-def create_bank(request):
-    form = CreateBankForm(request.POST)
-    if request.method == "POST":
-        if form.is_valid:
-            form.save()
-            return HttpResponseRedirect("/")
-        else:
-            form = CreateBankForm()
-    return render(request, 'create_bank.html', {'form': form})
+# Page where you add banks
+
+class CreateBankView(FormView):
+    template_name = 'create_bank.html'
+    form_class = CreateBankForm
+    success_url = '/'
+
+    def form_valid(self, form):
+        form.save()
+        return HttpResponseRedirect('/')
 
 
-def create_member(request):
-    form = CreateMemberForm(request.POST)
-    if request.method == "POST":
-        if form.is_valid:
-            form.save()
-            return HttpResponseRedirect("/")
-        else:
-            form = CreateMemberForm()
-    return render(request, 'create_member.html', {'form': form})
+# Page where you add members
 
+class CreateMemberView(FormView):
+    template_name = 'create_member.html'
+    form_class = CreateMemberForm
+    success_url = '/'
+
+    def form_valid(self, form):
+        form.save()
+        return HttpResponseRedirect('/')
+
+
+# Page where you add transactions
 
 class CreateTransactionView(FormView):
     form_class = CreateTransactionForm
     template_name = 'create_transaction.html'
+
+    # function that django call when form is valid
 
     def form_valid(self, form):
         value = int(form.cleaned_data['value'])
