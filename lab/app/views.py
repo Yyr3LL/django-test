@@ -35,7 +35,7 @@ class TransactionCreateView(CreateView):
     form_class = CreateTransactionForm
 
     def form_valid(self, form):
-        service.create_transaction(self, form)
+        service.create_transaction(form)
         return redirect('/')
 
 
