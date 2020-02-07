@@ -6,6 +6,11 @@
 </head>
 <body>
 
+
+    {% load socialaccount %}
+
+    {% if user.is_authenticated %}
+
     <h1>Main page</h1>
 
     <header>
@@ -54,5 +59,8 @@
         {% endfor %}
     </ol>
 
+    {% else %}
+    <a href="{% provider_login_url 'github' %}">pls login</a>
+    {% endif %}
 </body>
 </html>
